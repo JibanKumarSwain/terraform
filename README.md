@@ -14,10 +14,15 @@ Write your Terraform configuration files: Create a new file with a .tf extension
 
 Here is an example Terraform configuration file that creates an EC2 instance:
 
+
 arduino
+
 Copy code
+
 provider "aws" {
+
   region = "us-east-1"
+
 }
 
 
