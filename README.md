@@ -5,7 +5,7 @@ Install Terraform: Download and install the Terraform binary appropriate for you
 
 Create a directory for your Terraform configuration files: Create a new directory on your computer and navigate to it in your terminal or command prompt.
 
-
+   
 Initialize Terraform: Run the terraform init command in your terminal or command prompt to initialize your Terraform project.
 
 
