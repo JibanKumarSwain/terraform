@@ -16,7 +16,7 @@ Here is an example Terraform configuration file that creates an EC2 instance:
 
 
 arduino
-
+    
 Copy code
 
 provider "aws" {
