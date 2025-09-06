@@ -1,3 +1,8 @@
+# main.tf work are like we write all configuration on there this is the most importent part in terraform 
+# , we deciered on there what we need and how to create that on there.
+
+
+
 # we creata vpc for new Infra 
 
 resource "aws_vpc" "main" {
@@ -159,16 +164,73 @@ resource "aws_key_pair" "try1" {
   public_key = file("${path.module}/trykey.pub")
 }
 
+# 1st normal
+# # EC2 instance
+# resource "aws_instance" "server" {
+#   ami                    = "ami-02d26659fd82cf299"
+#   instance_type          = "t3.micro"
+#   key_name               = aws_key_pair.try1.key_name
+#   subnet_id              = aws_subnet.public_sb_b.id          # <-- always specify subnet
+#   vpc_security_group_ids = [aws_security_group.new_security.id] # <-- use IDs, not names
 
+#   tags = {
+#     Name = "servertest"
+#   }
+# }
+
+#2nd update
 # EC2 instance
+# resource "aws_instance" "server" {
+#   count = 2                                             # meta argument using this for increage the ec2 after that need to upadte on output.tf also
+#   ami                    = var.ec2_ami_id
+#   instance_type          = var.ec2_instance_type
+  
+#   user_data = file("${path.module}/nginx.sh")
+  
+      
+#   key_name               = aws_key_pair.try1.key_name
+#   subnet_id              = aws_subnet.public_sb_b.id          # <-- always specify subnet
+#   vpc_security_group_ids = [aws_security_group.new_security.id] # <-- use IDs, not names
+                 
+
+#   root_block_device {
+#     volume_size = var.ec2_root_storage_size
+#     volume_type = var.ec2_root_storage_type
+#   }
+
+#   tags = {
+#     Name = "servertest"
+#   }
+# }
+
+#3nd update 
+
 resource "aws_instance" "server" {
-  ami                    = "ami-02d26659fd82cf299"
-  instance_type          = "t3.micro"
+
+  for_each = tomap ({                                      # we are define the different type of server and there name and how many server we need 
+    server-micro = "t2.micro"
+    server-medium = "t2.medium"
+  })                                         
+  ami                    = var.ec2_ami_id
+  instance_type          = each.value                  # after adding the different for_each now thay take the ec2 type from here
+  
+  user_data = file("nginx.sh")
+  
+      
   key_name               = aws_key_pair.try1.key_name
   subnet_id              = aws_subnet.public_sb_b.id          # <-- always specify subnet
   vpc_security_group_ids = [aws_security_group.new_security.id] # <-- use IDs, not names
+                 
+
+  root_block_device {
+    volume_size = var.env == "prd" ? 20 : var.ec2_default_root_storage_size
+    volume_type = var.ec2_root_storage_type
+  }
 
   tags = {
-    Name = "servertest"
+    Name = each.key
   }
 }
+
+
+
