@@ -24,7 +24,7 @@ variable "ec2_root_storage_type" {
 
 
 variable "ec2_ami_id" {
-    default = "ami-02d26659fd82cf299"
+    default = "Add the image ID on ther "                 # add the image ID on there 
     type = string
   
 }
@@ -32,4 +32,5 @@ variable "ec2_ami_id" {
 variable "env" {
     default = "prd"
     type = string
+
 }
